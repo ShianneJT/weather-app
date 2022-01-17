@@ -1,71 +1,60 @@
 body {
-	font-family: Arial, Helvetica, sans-serif;
-	min-height: 100vh;
-	background: #f8f8ff;
-	overflow: hidden;
+	font-family: "Roboto", sans-serif;
 	color: #333;
 }
 
-h1,
-h3 {
+h1 {
 	text-align: center;
 }
 
-.emoji {
-	font-family: "Segoe UI Emoji";
-	font-size: 52px;
-}
-
 .container {
-	max-width: 680px;
+	max-width: 720px;
 }
 
-.appContainer {
-	overflow: hidden;
-	background: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
-	margin: 0 auto;
-	border-radius: 8px;
-	padding: 16px 22px;
-	box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
-}
-
-.cityNameList {
+.current-forecast ul {
 	list-style: none;
-	padding: 0;
+	padding-left: 0;
 }
 
-.cityName {
-	font-size: 32px;
+.weather-app {
+	background: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+	border-radius: 8px;
+	box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+	overflow: hidden;
+	padding: 16px 22px;
 }
 
-.description {
+.weather-temperature {
+	display: flex;
+	justify-content: center;
+}
+
+.weather-temperature #temperature {
+	font-size: 72px;
+}
+.weather-temperature #description {
+	text-align: center;
+	font-size: 14px;
+}
+.weather-temperature #description::first-letter {
 	text-transform: capitalize;
 }
 
-.currentTemp {
-	font-size: 72px;
-}
-
-.units {
+.weather-temperature .units {
 	position: relative;
-	top: -32px;
+	top: -34px;
+	margin-left: 6px;
 }
 
-.weatherStats {
-	list-style: none;
-	padding: 10px 0 0 0;
+.weather-temperature .active {
+	color: #333;
+	cursor: default;
+}
+
+.weather-temperature .active:hover {
+	text-decoration: none;
 }
 
 .source {
-	display: table;
 	font-size: 12px;
 }
-
-/* .units a:hover {
-	text-decoration: none;
-} */
-
-/* .cityName,
-.fiveDay-forecast-container div .emoji {
-	font-size: 32px;
-} */
