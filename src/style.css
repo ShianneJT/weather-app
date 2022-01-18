@@ -3,7 +3,8 @@ body {
 	color: #333;
 }
 
-h1 {
+h1,
+h3 {
 	text-align: center;
 }
 
@@ -17,7 +18,7 @@ h1 {
 }
 
 .weather-app {
-	background: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+	background: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
 	border-radius: 8px;
 	box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 	overflow: hidden;
@@ -53,6 +54,30 @@ h1 {
 
 .weather-temperature .active:hover {
 	text-decoration: none;
+}
+
+.forecast-container {
+	display: flex;
+	justify-content: center;
+}
+
+.forecast-container img {
+	margin: 0 auto;
+}
+
+.forecast-date,
+.forecast-temperatures {
+	text-align: center;
+}
+
+.forecast-temperature-max {
+	font-weight: 500;
+	font-size: 18px;
+}
+
+.forecast-temperature-min {
+	opacity: 0.6;
+	font-size: 14px;
 }
 
 .source {

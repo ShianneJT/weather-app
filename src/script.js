@@ -17,6 +17,13 @@ function formatDateTime(date) {
 	return formattedDate;
 }
 
+function formatDay(timestamp) {
+	let date = new Date(timestamp * 1000);
+	let day = date.getDay();
+	let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+	return days[day];
+}
+
 let now = new Date();
 
 let currentTime = document.querySelector("#date");
@@ -48,6 +55,43 @@ function showWeather(response) {
 	descriptionElement.innerHTML = description;
 	iconElement.setAttribute("src", `http://openweathermap.org/img/wn/${icon}@2x.png`);
 	iconElement.setAttribute("alt", description);
+
+	getForecast(data.coord);
+}
+
+function getForecast(coordinates) {
+	let apiKey = "cee89d2ce28328a0b51ee85c0d36674d";
+	let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&units=metric&appid=${apiKey}`;
+	console.log(apiUrl);
+	axios.get(apiUrl).then(displayForecast);
+}
+
+function displayForecast(response) {
+	let forecast = response.data.daily;
+	let forecastElement = document.querySelector("#forecast");
+
+	let forecastHTML = `<div class="row">`;
+	forecast.forEach(function (forecastDay, index) {
+		if (index < 5) {
+			forecastHTML =
+				forecastHTML +
+				`
+        <div class="col mr-4 ml-4">
+          <div class="forecast-date">${formatDay(forecastDay.dt)}</div>
+          <img src="http://openweathermap.org/img/wn/${
+						forecastDay.weather[0].icon
+					}@2x.png" alt="" width="50" />
+          <div class="forecast-temperatures">
+            <span class="forecast-temperature-max">${Math.round(forecastDay.temp.max)}°</span>
+            <span class="forecast-temperature-min">${Math.round(forecastDay.temp.min)}°</span>
+          </div>
+        </div>    
+        `;
+		}
+	});
+
+	forecastHTML = forecastHTML + `</div>`;
+	forecastElement.innerHTML = forecastHTML;
 }
 
 function search(city) {
@@ -90,22 +134,4 @@ fahrenheitLink.addEventListener("click", displayFahrenheit);
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsius);
 
-search("San Fransisco");
-
-// function searchCurrentLocation(position) {
-// 	let lat = position.coords.latitude;
-// 	let lon = position.coords.longitude;
-
-// 	let apiKey = "cee89d2ce28328a0b51ee85c0d36674d";
-// 	let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
-
-// 	axios.get(apiUrl).then(showWeather);
-// }
-
-// function getCurrentLocation(event) {
-// 	event.preventDefault();
-// 	navigator.geolocation.getCurrentPosition(searchCurrentLocation);
-// }
-
-// let currentLocationBtn = document.querySelector("#current-location-btn");
-// currentLocationBtn.addEventListener("click", getCurrentLocation);
+search("Salt Lake City");
