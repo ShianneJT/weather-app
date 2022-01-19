@@ -1,20 +1,21 @@
-function formatDateTime(date) {
-	let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-	let day = days[date.getDay()];
+function formatDateTime(timestamp) {
+	let date = new Date(timestamp);
 	let hour = date.getHours();
+
+	if (hour < 10) {
+		hour = `0${hour}`;
+	}
+
 	let minutes = date.getMinutes();
 
 	if (minutes < 10) {
 		minutes = `0${minutes}`;
 	}
 
-	if (hour < 10) {
-		hour = `0${hour}`;
-	}
+	let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	let day = days[date.getDay()];
 
-	let formattedDate = `${day} ${hour}:${minutes}`;
-
-	return formattedDate;
+	return `${day} ${hour}:${minutes}`;
 }
 
 function formatDay(timestamp) {
@@ -22,45 +23,6 @@ function formatDay(timestamp) {
 	let day = date.getDay();
 	let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 	return days[day];
-}
-
-let now = new Date();
-
-let currentTime = document.querySelector("#date");
-currentTime.innerHTML = formatDateTime(now);
-
-function showWeather(response) {
-	let cityElement = document.querySelector("#city");
-	let humidityElement = document.querySelector("#humidity");
-	let windSpeedElement = document.querySelector("#wind");
-	let temperatureElement = document.querySelector("#temperature");
-	let descriptionElement = document.querySelector("#description");
-	let iconElement = document.querySelector("#icon");
-
-	let data = response.data;
-
-	let cityName = data.name;
-	let humidity = data.main.humidity;
-	let windSpeed = data.wind.speed;
-	let temperature = Math.round(data.main.temp);
-	let description = data.weather[0].description;
-	let icon = data.weather[0].icon;
-
-	cityElement.innerHTML = cityName;
-	humidityElement.innerHTML = humidity;
-	windSpeedElement.innerHTML = windSpeed;
-	temperatureElement.innerHTML = temperature;
-	descriptionElement.innerHTML = description;
-	iconElement.setAttribute("src", `http://openweathermap.org/img/wn/${icon}@2x.png`);
-	iconElement.setAttribute("alt", description);
-
-	getForecast(data.coord);
-}
-
-function getForecast(coordinates) {
-	let apiKey = "cee89d2ce28328a0b51ee85c0d36674d";
-	let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&units=imperial&appid=${apiKey}`;
-	axios.get(apiUrl).then(displayForecast);
 }
 
 function displayForecast(response) {
@@ -89,6 +51,43 @@ function displayForecast(response) {
 
 	forecastHTML = forecastHTML + `</div>`;
 	forecastElement.innerHTML = forecastHTML;
+}
+
+function getForecast(coordinates) {
+	let apiKey = "cee89d2ce28328a0b51ee85c0d36674d";
+	let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&units=imperial&appid=${apiKey}`;
+	axios.get(apiUrl).then(displayForecast);
+}
+
+function showWeather(response) {
+	let cityElement = document.querySelector("#city");
+	let dateElement = document.querySelector("#date");
+	let humidityElement = document.querySelector("#humidity");
+	let windSpeedElement = document.querySelector("#wind");
+	let temperatureElement = document.querySelector("#temperature");
+	let descriptionElement = document.querySelector("#description");
+	let iconElement = document.querySelector("#icon");
+
+	let data = response.data;
+
+	let cityName = data.name;
+	let dateTime = formatDateTime(data.dt * 1000);
+	let humidity = data.main.humidity;
+	let windSpeed = data.wind.speed;
+	let temperature = Math.round(data.main.temp);
+	let description = data.weather[0].description;
+	let icon = data.weather[0].icon;
+
+	cityElement.innerHTML = cityName;
+	dateElement.innerHTML = dateTime;
+	humidityElement.innerHTML = humidity;
+	windSpeedElement.innerHTML = windSpeed;
+	temperatureElement.innerHTML = temperature;
+	descriptionElement.innerHTML = description;
+	iconElement.setAttribute("src", `http://openweathermap.org/img/wn/${icon}@2x.png`);
+	iconElement.setAttribute("alt", description);
+
+	getForecast(data.coord);
 }
 
 function search(city) {
